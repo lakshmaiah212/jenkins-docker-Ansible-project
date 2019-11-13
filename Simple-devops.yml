@@ -1,0 +1,21 @@
+---
+ - hosts : all 
+   become : yes
+   tasks : 
+        - name : stop running current container
+          command : docker stop devops-container
+          ignore_errors : yes
+        - name : remove stopped container
+          command : docker rm devops-container
+          ignore_errors : yes
+
+        - name : remove docker images
+          command : docker rmi devops-project
+          ignore_errors : yes
+
+        - name : Build image from docker file
+          command : docker pull lakshmaiah212/devops-project:latest
+        
+
+        - name : create a container from docker image
+          command : docker run -dit --name devops-container -p 8080:8080 lakshmaiah212/devops-project:latest
